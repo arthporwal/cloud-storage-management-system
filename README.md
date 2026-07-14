@@ -1,7 +1,3 @@
-<!--
-Before committing: check the [ ] items below against your actual code — everything else
-is filled from your resume.
--->
 
 # Cloud Storage Management System
 
@@ -75,8 +71,3 @@ src/main/java/
 ├── repository/    # Data access layer
 ├── model/         # Entity classes
 ```
-*(Adjust to match your actual structure)*
-
-## Deployment
-
-Deployed backend services on AWS EC2 with AWS S3 integration for scalable, durable object storage. *(Optionally add: EC2 instance type, region, or a short note on your deployment process — this is a strong signal for reviewers since most student projects never get deployed.)*
