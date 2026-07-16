@@ -1,8 +1,8 @@
 package com.example.cloudstoragemanagementsystem.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.S3Client;
-import org.springframework.beans.factory.annotation.Value;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 
@@ -21,7 +21,6 @@ public class S3Service {
     }
 
     public List<String> listObjects() {
-
         ListObjectsV2Request request = ListObjectsV2Request.builder()
                 .bucket(bucketName)
                 .build();
