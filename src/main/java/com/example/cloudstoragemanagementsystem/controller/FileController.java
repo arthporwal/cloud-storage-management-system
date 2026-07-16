@@ -1,5 +1,6 @@
 package com.example.cloudstoragemanagementsystem.controller;
 
+import com.example.cloudstoragemanagementsystem.dto.UploadResponse;
 import com.example.cloudstoragemanagementsystem.service.S3Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public UploadResponse uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         return s3Service.uploadFile(file);
     }
 }

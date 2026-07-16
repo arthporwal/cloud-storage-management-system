@@ -1,5 +1,6 @@
 package com.example.cloudstoragemanagementsystem.service;
 
+import com.example.cloudstoragemanagementsystem.dto.UploadResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +39,7 @@ public class S3Service {
                 .toList();
     }
 
-    public String uploadFile(MultipartFile file) throws IOException {
+    public UploadResponse uploadFile(MultipartFile file) throws IOException {
 
         String fileName = file.getOriginalFilename();
 
@@ -57,6 +58,10 @@ public class S3Service {
                 )
         );
 
-        return uniqueFileName;
+        return new UploadResponse(
+                "File uploaded successfully",
+                file.getOriginalFilename(),
+                uniqueFileName
+        );
     }
 }
