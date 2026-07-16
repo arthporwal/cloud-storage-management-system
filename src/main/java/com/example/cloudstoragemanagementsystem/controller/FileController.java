@@ -2,6 +2,8 @@ package com.example.cloudstoragemanagementsystem.controller;
 
 import com.example.cloudstoragemanagementsystem.dto.UploadResponse;
 import com.example.cloudstoragemanagementsystem.service.S3Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +28,11 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public UploadResponse uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        return s3Service.uploadFile(file);
+    public ResponseEntity<UploadResponse> uploadFile(
+            @RequestParam("file") MultipartFile file) throws IOException {
+
+        UploadResponse response = s3Service.uploadFile(file);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
