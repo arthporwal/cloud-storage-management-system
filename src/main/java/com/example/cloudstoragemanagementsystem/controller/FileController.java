@@ -1,13 +1,11 @@
 package com.example.cloudstoragemanagementsystem.controller;
 
+import com.example.cloudstoragemanagementsystem.dto.ApiResponse;
 import com.example.cloudstoragemanagementsystem.dto.UploadResponse;
 import com.example.cloudstoragemanagementsystem.service.S3Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,5 +32,15 @@ public class FileController {
         UploadResponse response = s3Service.uploadFile(file);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/files")
+    public ResponseEntity<ApiResponse<Void>> deleteFile(
+            @RequestParam String key
+    ){
+        s3Service.deleteFile(key);
+
+        ApiResponse<Void> apiResponse = new ApiResponse<>("File deleted successfully.", null);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 }
