@@ -3,10 +3,13 @@ package com.example.cloudstoragemanagementsystem.controller;
 import com.example.cloudstoragemanagementsystem.dto.ApiResponse;
 import com.example.cloudstoragemanagementsystem.dto.UploadResponse;
 import com.example.cloudstoragemanagementsystem.service.S3Service;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,5 +45,24 @@ public class FileController {
 
         ApiResponse<Void> apiResponse = new ApiResponse<>("File deleted successfully.", null);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
+    @GetMapping("/download")
+    public ResponseEntity<Resource> downloadFile(@RequestParam String key){
+        ResponseInputStream<GetObjectResponse> response = s3Service.downloadFile(key);
+        InputStreamResource resource = new InputStreamResource(response);
+
+        String fileName = key.substring(key.lastIndexOf('/') + 1);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(
+                ContentDisposition.attachment()
+                        .filename(fileName)
+                        .build()
+        );
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType(response.response().contentType()))
+                .contentLength(response.response().contentLength())
+                .body(resource);
     }
 }
